@@ -27,10 +27,18 @@ https://github.com/Jmainguy/bible/pull/1
 https://github.com/Jmainguy/bak/pull/123
 ```
 
+## Linux / macOS homebrew install
+
+```/bin/bash
+brew install jmainguy/tap/ghreport
+```
+
 ## Releases
+We currently build releases for RPM, DEB, macOS, and Windows.
+
 Grab Release from [The Releases Page](https://github.com/Jmainguy/ghreport/releases)
 
-## Build
+## Build it yourself
 ```/bin/bash
 export GO111MODULE=on
 go build
