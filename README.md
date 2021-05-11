@@ -6,6 +6,8 @@ Application to check Github for Pull Requests, that are not Drafts, in repos the
 The program takes no arguments, and is configured via ENV variables. 
 
 * ghreportToken: Should be set to a Github API Token with access to the repos you are checking
+    * Set permissions for token to repo - full control of private repositories, enable SSO if your repos require it
+    * ![Github Personal Access Token Permissions](https://github.com/Jmainguy/ghreport/blob/main/docs/permissions.png?raw=true)
 * subscribedRepos: Should be set to a space delimmited list of Github Repos you want to check
 
 Example configuration in ~/.bashrc
