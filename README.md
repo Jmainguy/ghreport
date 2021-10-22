@@ -16,6 +16,14 @@ export ghreportToken=e0e9eac4e84446df6f3db180d07bfb222e91234
 export subscribedRepos="Jmainguy/ghreport Jmainguy/bible Jmainguy/ghReview Jmainguy/bak"
 ```
 
+Additionally if you have a long list of repos to watch you can use this format when setting the environment variable:
+```
+export subscribedRepos="\
+somesite/aebot \
+somesite/ansible-okta-aws-auth \
+somesite/blahblah"
+```
+
 Running the progam
 ```
 ghreport
