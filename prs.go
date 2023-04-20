@@ -19,6 +19,7 @@ func getPrFromRepo(client *githubv4.Client, org, repo string) ([]PR, error) {
 					Node struct {
 						URL       githubv4.URI
 						CreatedAt githubv4.DateTime
+						IsDraft   githubv4.Boolean
 					}
 				}
 			} `graphql:"pullRequests(first: 100, states: $states, after: $cursor)"`
@@ -45,10 +46,12 @@ func getPrFromRepo(client *githubv4.Client, org, repo string) ([]PR, error) {
 
 		// Loop thru each repo, and add it to []repos
 		for _, edge := range repoQuery.Repository.PullRequests.Edges {
-			var pr PR
-			pr.URL = edge.Node.URL.String()
-			pr.CreatedAt = edge.Node.CreatedAt
-			PRS = append(PRS, pr)
+			if !bool(edge.Node.IsDraft) {
+				var pr PR
+				pr.URL = edge.Node.URL.String()
+				pr.CreatedAt = edge.Node.CreatedAt
+				PRS = append(PRS, pr)
+			}
 		}
 
 		if !repoQuery.Repository.PullRequests.PageInfo.HasNextPage {

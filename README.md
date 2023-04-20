@@ -33,8 +33,7 @@ Sample output
 
 ```
 [jmainguy@jmainguy-7410 ghreport]$ ghreport 
-https://github.com/Jmainguy/bible/pull/1
-https://github.com/Jmainguy/bak/pull/123
+https://github.com/Jmainguy/stockop/pull/9: createdAt 2023-04-07 01:10:22 +0000 UTC
 ```
 
 ## Linux / macOS homebrew install
