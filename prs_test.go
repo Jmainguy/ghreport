@@ -35,7 +35,7 @@ func TestExtractPRDataFromEdges(t *testing.T) {
 				IsDraft   githubv4.Boolean
 			}{
 				URL:       uri1,
-				CreatedAt: githubv4.DateTime{Time: time.Now().UTC().Truncate(time.Microsecond)},
+				CreatedAt: githubv4.DateTime{Time: time.Now().UTC().Truncate(time.Hour)},
 				IsDraft:   githubv4.Boolean(false),
 			},
 		},
@@ -46,7 +46,7 @@ func TestExtractPRDataFromEdges(t *testing.T) {
 				IsDraft   githubv4.Boolean
 			}{
 				URL:       uri2,
-				CreatedAt: githubv4.DateTime{Time: time.Now().UTC().Truncate(time.Microsecond)},
+				CreatedAt: githubv4.DateTime{Time: time.Now().UTC().Truncate(time.Hour)},
 				IsDraft:   githubv4.Boolean(true),
 			},
 		},
@@ -56,7 +56,7 @@ func TestExtractPRDataFromEdges(t *testing.T) {
 	expected := []PR{
 		{
 			URL:       "https://github.com/my-org/my-repo/pull/1",
-			CreatedAt: githubv4.DateTime{Time: time.Now().UTC().Truncate(time.Microsecond)},
+			CreatedAt: githubv4.DateTime{Time: time.Now().UTC().Truncate(time.Hour)},
 		},
 	}
 

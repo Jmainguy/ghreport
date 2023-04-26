@@ -12,6 +12,7 @@ type PR struct {
 	URL       string            `json:"url"`
 }
 
+// PullRequestEdge : A PullRequestEdge
 type PullRequestEdge struct {
 	Node struct {
 		URL       githubv4.URI
@@ -23,6 +24,7 @@ type PullRequestEdge struct {
 // You can write a function that accepts an interface as an argument,
 // and then pass either MockClient or githubv4.Client to it.
 
+// Client : A arbitrary interface to support either MockClient or githubv4.Client
 type Client interface {
 	Query(ctx context.Context, q interface{}, variables map[string]interface{}) error
 }
