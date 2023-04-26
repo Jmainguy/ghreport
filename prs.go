@@ -7,7 +7,7 @@ import (
 	"github.com/shurcooL/githubv4"
 )
 
-func getPrFromRepo(client *githubv4.Client, org, repo string) ([]PR, error) {
+func getPrFromRepo(client Client, org, repo string) ([]PR, error) {
 	var repoQuery struct {
 		Repository struct {
 			PullRequests struct {
@@ -15,13 +15,7 @@ func getPrFromRepo(client *githubv4.Client, org, repo string) ([]PR, error) {
 					HasNextPage githubv4.Boolean
 					EndCursor   githubv4.String
 				}
-				Edges []struct {
-					Node struct {
-						URL       githubv4.URI
-						CreatedAt githubv4.DateTime
-						IsDraft   githubv4.Boolean
-					}
-				}
+				Edges []PullRequestEdge
 			} `graphql:"pullRequests(first: 100, states: $states, after: $cursor)"`
 		} `graphql:"repository(name: $repo, owner: $org)"`
 	}
@@ -44,15 +38,13 @@ func getPrFromRepo(client *githubv4.Client, org, repo string) ([]PR, error) {
 			return PRS, err
 		}
 
-		// Loop thru each repo, and add it to []repos
-		for _, edge := range repoQuery.Repository.PullRequests.Edges {
-			if !bool(edge.Node.IsDraft) {
-				var pr PR
-				pr.URL = edge.Node.URL.String()
-				pr.CreatedAt = edge.Node.CreatedAt
-				PRS = append(PRS, pr)
-			}
-		}
+		// The three dots ... is called the ellipsis or "unpacking" operator.
+		// It allows a slice to be expanded in place and passed as individual arguments to a variadic function like append().
+		// The verbose equivalent would look like
+		// prsToAdd := extractPRDataFromEdges(repoQuery.Repository.PullRequests.Edges)
+		// PRS = append(PRS, prsToAdd[0], prsToAdd[1], ..., prsToAdd[N])
+
+		PRS = append(PRS, extractPRDataFromEdges(repoQuery.Repository.PullRequests.Edges)...)
 
 		if !repoQuery.Repository.PullRequests.PageInfo.HasNextPage {
 			break
@@ -60,8 +52,22 @@ func getPrFromRepo(client *githubv4.Client, org, repo string) ([]PR, error) {
 			variables["cursor"] = githubv4.NewString(repoQuery.Repository.PullRequests.PageInfo.EndCursor)
 		}
 		// Sleep for at least a second. https://docs.github.com/en/rest/guides/best-practices-for-integrators
-		time.Sleep(time.Second * 2)
-
+		time.Sleep(2 * time.Second)
 	}
 	return PRS, nil
+}
+
+func extractPRDataFromEdges(edges []PullRequestEdge) []PR {
+	var PRS []PR
+
+	for _, edge := range edges {
+		if !bool(edge.Node.IsDraft) {
+			var pr PR
+			pr.URL = edge.Node.URL.String()
+			pr.CreatedAt = edge.Node.CreatedAt
+			PRS = append(PRS, pr)
+		}
+	}
+
+	return PRS
 }
