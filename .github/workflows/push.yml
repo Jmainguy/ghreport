@@ -21,11 +21,7 @@ jobs:
 
       - name: Get Build Tools
         run: |
-          GO111MODULE=on go get github.com/ory/go-acc
-
-      - name: Add $GOPATH/bin to $PATH
-        run: |
-          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+          go install github.com/ory/go-acc@latest
 
       - name: git checkout
         uses: actions/checkout@v3
