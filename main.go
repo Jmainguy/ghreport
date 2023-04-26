@@ -38,7 +38,7 @@ func main() {
 		if len(ownerAndRepo) == 2 {
 			owner := ownerAndRepo[0]
 			repo := ownerAndRepo[1]
-			// List of pull requests for specific repo
+
 			pullRequests, err := getPrFromRepo(client, owner, repo)
 			if err != nil {
 				panic(err)
