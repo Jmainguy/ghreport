@@ -3,9 +3,11 @@ package main
 import (
 	"fmt"
 	"os"
+	"text/tabwriter"
 )
 
 func main() {
+	w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
 	subscribedRepos, envToken, err := getEnvVariables()
 	if err != nil {
 		fmt.Println(err)
@@ -29,7 +31,10 @@ func main() {
 		}
 
 		for _, pr := range pullRequests {
-			fmt.Printf("%s: createdAt %s\n", pr.URL, pr.CreatedAt)
+			//fmt.Printf("%s: createdAt %s\n", pr.URL, pr.CreatedAt)
+			fmt.Fprintf(w, "%s:\tcreatedAt %s\n", pr.URL, pr.CreatedAt)
 		}
 	}
+
+	w.Flush()
 }
