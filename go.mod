@@ -3,7 +3,7 @@ module github.com/jmainguy/ghreport
 go 1.19
 
 require (
-	github.com/shurcooL/githubv4 v0.0.0-20230424031643-6cea62ecd5a9
+	github.com/shurcooL/githubv4 v0.0.0-20230704064427-599ae7bbf278
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/oauth2 v0.9.0
 )
