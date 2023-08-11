@@ -29,9 +29,7 @@ archives:
         format: zip
 
 nfpms:
-- file_name_template: >-
-    {{- if eq .Arch "amd64" }}x86_64
-  homepage:  https://github.com/Jmainguy/ghreport
+- homepage:  https://github.com/Jmainguy/ghreport
   description: Check Github for Pull Requests, that are not Drafts, in repos the user cares about.
   maintainer: Jonathan Seth Mainguy <jon@soh.re>
   license: GPLv2
@@ -45,7 +43,7 @@ nfpms:
   - rpm
 
 brews:
-  - tap:
+  - repository:
       owner: jmainguy
       name: homebrew-tap
     folder: Formula
