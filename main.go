@@ -32,7 +32,7 @@ func main() {
 
 		for _, pr := range pullRequests {
 			//fmt.Printf("%s: createdAt %s\n", pr.URL, pr.CreatedAt)
-			fmt.Fprintf(w, "%s:\tcreatedAt %s\n", pr.URL, pr.CreatedAt)
+			fmt.Fprintf(w, "%s:\tauthor: %s\tcreatedAt %s\n", pr.URL, pr.Owner, pr.CreatedAt)
 		}
 	}
 

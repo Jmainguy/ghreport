@@ -65,6 +65,7 @@ func extractPRDataFromEdges(edges []PullRequestEdge) []PR {
 			var pr PR
 			pr.URL = edge.Node.URL.String()
 			pr.CreatedAt = edge.Node.CreatedAt
+			pr.Owner = edge.Node.Author.Login
 			PRS = append(PRS, pr)
 		}
 	}
