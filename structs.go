@@ -8,9 +8,16 @@ import (
 
 // PR : A pullRequest
 type PR struct {
-	CreatedAt githubv4.DateTime `json:"createdAt"`
-	URL       string            `json:"url"`
-	Owner     githubv4.String   `json:"owner"`
+	CreatedAt      githubv4.DateTime `json:"createdAt"`
+	URL            string            `json:"url"`
+	Owner          githubv4.String   `json:"owner"`
+	ReviewDecision githubv4.String   `json:"reviewDecision"`
+	Mergeable      githubv4.String   `json:"mergeable"`
+}
+
+// Repo : Struct for repo providing NameWithOwner
+type Repo struct {
+	NameWithOwner githubv4.String `json:"nameWithOwner"`
 }
 
 // PullRequestEdge : A PullRequestEdge
@@ -22,6 +29,28 @@ type PullRequestEdge struct {
 		Author    struct {
 			Login githubv4.String
 		}
+		ReviewDecision githubv4.String
+		Mergeable      githubv4.String
+	}
+}
+
+// RepositoryEdge : Graphql edge for repository
+type RepositoryEdge struct {
+	Node RepositoryNode
+}
+
+// RepositoryNode : Graphql node for repository
+type RepositoryNode struct {
+	NameWithOwner    githubv4.String
+	RepositoryTopics struct {
+		Nodes []RepositoryTopicNode
+	} `graphql:"repositoryTopics(first: 100)"`
+}
+
+// RepositoryTopicNode : Struct for the repository topic
+type RepositoryTopicNode struct {
+	Topic struct {
+		Name string
 	}
 }
 

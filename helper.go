@@ -3,28 +3,12 @@ package main
 import (
 	"context"
 	"fmt"
-	"os"
 	"strings"
+	"time"
 
 	"github.com/shurcooL/githubv4"
 	"golang.org/x/oauth2"
 )
-
-func getEnvVariables() ([]string, string, error) {
-	envSubscribedRepos := os.Getenv("subscribedRepos")
-	if envSubscribedRepos == "" {
-		return nil, "", fmt.Errorf("env variable subscribedRepos is not defined")
-	}
-
-	subscribedRepos := strings.Split(envSubscribedRepos, " ")
-
-	envToken := os.Getenv("ghreportToken")
-	if envToken == "" {
-		return nil, "", fmt.Errorf("env variable ghreportToken is not defined")
-	}
-
-	return subscribedRepos, envToken, nil
-}
 
 func createGithubClient(envToken string) *githubv4.Client {
 	src := oauth2.StaticTokenSource(
@@ -49,14 +33,34 @@ func getOwnerAndRepo(ownerRepo string) (string, string, error) {
 	return ownerAndRepo[0], ownerAndRepo[1], nil
 }
 
-func compareSlices(a, b []string) bool {
-	if len(a) != len(b) {
-		return false
+func formatTimeElapsed(duration time.Duration) string {
+	if duration.Hours() >= 24 {
+		return fmt.Sprintf("%.0f days", duration.Hours()/24)
+	} else if duration.Hours() >= 1 {
+		return fmt.Sprintf("%.0f hours", duration.Hours())
+	} else {
+		return fmt.Sprintf("%.0f minutes", duration.Minutes())
 	}
-	for i, v := range a {
-		if v != b[i] {
-			return false
-		}
+}
+
+func getReviewDecisionEmoji(decision string) string {
+	switch decision {
+	case "APPROVED":
+		return "✅" // Green checkmark emoji
+	case "CHANGES_REQUESTED":
+		return "❌" // Red x emoji
+	case "REVIEW_REQUIRED":
+		return "🔍" // Magnifying glass emoji or any other appropriate emoji
+	default:
+		return "😅" // Emoji indicating everything is okay, but no review was requested
 	}
-	return true
+}
+
+func getMergeableEmoji(mergeable string) string {
+	if mergeable == "MERGEABLE" {
+		return "✅" // Green checkmark emoji
+	} else if mergeable == "CONFLICTING" {
+		return "❌" // Red x emoji
+	}
+	return ""
 }

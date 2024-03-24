@@ -3,25 +3,30 @@
 Application to check Github for Pull Requests, that are not Drafts, in repos the user cares about.
 
 ## Usage
-The program takes no arguments, and is configured via ENV variables. 
+The program is configured via a YAML file located at `$HOME/.config/ghreport/config.yaml`.
 
-* ghreportToken: Should be set to a Github API Token with access to the repos you are checking
+* token: Should be set to a Github API Token with access to the repos you are checking
     * Set permissions for token to repo - full control of private repositories, enable SSO if your repos require it
     * ![Github Personal Access Token Permissions](https://github.com/Jmainguy/ghreport/blob/main/docs/permissions.png?raw=true)
-* subscribedRepos: Should be set to a space delimmited list of Github Repos you want to check
+* One of subscribedRepos, autoDiscover.organizations, or autoDiscover.users must be set if you wish to have any results. You can set all three if you wish.
+* topic limits what is returned from organizations and users to just that topic, this is an optional field.
 
-Example configuration in ~/.bashrc
-```
-export ghreportToken=e0e9eac4e84446df6f3db180d07bfb222e91234
-export subscribedRepos="Jmainguy/ghreport Jmainguy/bible Jmainguy/ghReview Jmainguy/bak"
-```
+Here's an example configuration:
 
-Additionally if you have a long list of repos to watch you can use this format when setting the environment variable:
-```
-export subscribedRepos="\
-somesite/aebot \
-somesite/ansible-okta-aws-auth \
-somesite/blahblah"
+```yaml
+autoDiscover:
+  organizations:
+    - name: your_organization_name
+      topic: topic_to_watch
+  users:
+    - name: your_username
+      topic: topic_to_watch
+subscribedRepos:
+  - Jmainguy/ghreport
+  - Jmainguy/bible
+  - Jmainguy/ghReview
+  - Jmainguy/bak
+token: e0e9eac4e84446df6f3db180d07bfb222e91234
 ```
 
 Running the progam
@@ -32,14 +37,27 @@ ghreport
 Sample output
 
 ```
-[jmainguy@jmainguy-7410 ghreport]$ ghreport 
-https://github.com/Jmainguy/stockop/pull/9: createdAt 2023-04-07 01:10:22 +0000 UTC
-```
-
-## Linux / macOS homebrew install
-
-```/bin/bash
-brew install jmainguy/tap/ghreport
+jmainguy@fedora:~/Github/ghreport$ ./ghreport 
+https://github.com/Jmainguy/statuscode/pull/32
+  author: renovate
+  Age: 3 days 
+  reviewDecision: ❌
+  mergeable ✅
+https://github.com/Jmainguy/statuscode/pull/33
+  author: renovate
+  Age: 3 days 
+  reviewDecision: ✅
+  mergeable ✅
+https://github.com/Standouthost/Multicraft/pull/9
+  author: TheWebGamer
+  Age: 3321 days 
+  reviewDecision: ✅
+  mergeable ❌
+https://github.com/Standouthost/Multicraft/pull/28
+  author: ungarscool1
+  Age: 2700 days 
+  reviewDecision: 😅
+  mergeable ✅
 ```
 
 ## Releases

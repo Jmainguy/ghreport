@@ -2,79 +2,8 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"testing"
 )
-
-func TestGetEnvVariablesSuccess(t *testing.T) {
-	os.Setenv("subscribedRepos", "owner1/repo1 owner2/repo2")
-	os.Setenv("ghreportToken", "testToken")
-	defer os.Unsetenv("subscribedRepos")
-	defer os.Unsetenv("ghreportToken")
-
-	expectedSubscribedRepos := []string{"owner1/repo1", "owner2/repo2"}
-	expectedToken := "testToken"
-
-	subscribedRepos, token, err := getEnvVariables()
-
-	if err != nil {
-		t.Errorf("Expected no error, but got %v", err)
-	}
-
-	if !compareSlices(subscribedRepos, expectedSubscribedRepos) {
-		t.Errorf("Expected subscribedRepos %v, but got %v", expectedSubscribedRepos, subscribedRepos)
-	}
-
-	if token != expectedToken {
-		t.Errorf("Expected token %s, but got %s", expectedToken, token)
-	}
-}
-
-func TestGetEnvVariablesMissingSubscribedRepos(t *testing.T) {
-	os.Setenv("ghreportToken", "testToken")
-	defer os.Unsetenv("ghreportToken")
-
-	expectedErrorMessage := "env variable subscribedRepos is not defined"
-
-	subscribedRepos, token, err := getEnvVariables()
-
-	if subscribedRepos != nil {
-		t.Errorf("Expected subscribedRepos to be nil, but got %v", subscribedRepos)
-	}
-
-	if token != "" {
-		t.Errorf("Expected token to be empty string, but got %s", token)
-	}
-
-	if err == nil {
-		t.Error("Expected error, but got nil")
-	} else if err.Error() != expectedErrorMessage {
-		t.Errorf("Expected error message '%s', but got '%v'", expectedErrorMessage, err)
-	}
-}
-
-func TestGetEnvVariablesMissingToken(t *testing.T) {
-	os.Setenv("subscribedRepos", "owner1/repo1 owner2/repo2")
-	defer os.Unsetenv("subscribedRepos")
-
-	expectedErrorMessage := "env variable ghreportToken is not defined"
-
-	subscribedRepos, token, err := getEnvVariables()
-
-	if subscribedRepos != nil {
-		t.Errorf("Expected subscribedRepos to be nil, but got %v", subscribedRepos)
-	}
-
-	if token != "" {
-		t.Errorf("Expected token to be empty string, but got %s", token)
-	}
-
-	if err == nil {
-		t.Error("Expected error, but got nil")
-	} else if err.Error() != expectedErrorMessage {
-		t.Errorf("Expected error message '%s', but got '%v'", expectedErrorMessage, err)
-	}
-}
 
 func TestGetOwnerAndRepo(t *testing.T) {
 	testCases := []struct {

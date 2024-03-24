@@ -66,6 +66,8 @@ func extractPRDataFromEdges(edges []PullRequestEdge) []PR {
 			pr.URL = edge.Node.URL.String()
 			pr.CreatedAt = edge.Node.CreatedAt
 			pr.Owner = edge.Node.Author.Login
+			pr.Mergeable = edge.Node.Mergeable
+			pr.ReviewDecision = edge.Node.ReviewDecision
 			PRS = append(PRS, pr)
 		}
 	}
