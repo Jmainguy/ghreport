@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"flag"
 	"fmt"
 	"os"
 	"strings"
@@ -8,8 +10,14 @@ import (
 	"time"
 )
 
+// Flags : Define a struct to hold command-line flags
+type Flags struct {
+	OutputFormat string
+}
+
 func main() {
-	w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+	// Parse command-line flags
+	flags := parseFlags()
 
 	config, err := getConfig()
 	if err != nil {
@@ -60,6 +68,8 @@ func main() {
 		repoMap[strings.ToLower(repoString)] = true
 	}
 
+	w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+
 	// List of repos to watch
 
 	for ownerRepo := range repoMap {
@@ -83,11 +93,62 @@ func main() {
 
 			mergeableEmoji := getMergeableEmoji(string(pr.Mergeable))
 
-			fmt.Fprintf(w, "%s\n\tauthor: %s\n\tAge: %s \n\treviewDecision: %s\n\tmergeable %s\n", pr.URL, pr.Owner, timeLabel, reviewDecisionEmoji, mergeableEmoji)
-
-			//fmt.Fprintf(w, "%s:\tauthor: %s\tcreatedAt %s\treviewDecison %s\tmergeable %s\n", pr.URL, pr.Owner, pr.CreatedAt, pr.ReviewDecision, pr.Mergeable)
+			// Choose output format based on the flag
+			switch flags.OutputFormat {
+			case "json":
+				outputJSON(pr, timeLabel, reviewDecisionEmoji, mergeableEmoji)
+			case "singleline":
+				outputSingleLine(pr, timeLabel, reviewDecisionEmoji, mergeableEmoji)
+			default:
+				outputDefault(w, pr, timeLabel, reviewDecisionEmoji, mergeableEmoji)
+			}
 		}
 	}
 
-	w.Flush()
+	if flags.OutputFormat == "" {
+		w.Flush()
+	}
+}
+
+// Function to parse command-line flags
+func parseFlags() Flags {
+	var outputFormat string
+	flag.StringVar(&outputFormat, "output", "", "Output format (default, singleline, json)")
+	flag.Parse()
+	return Flags{OutputFormat: outputFormat}
+}
+
+// Function to output data in default format
+func outputDefault(w *tabwriter.Writer, pr PullRequest, timeLabel, reviewDecisionEmoji, mergeableEmoji string) {
+	fmt.Fprintf(w, "%s\n\tauthor: %s\n\tAge: %s \n\treviewDecision: %s\n\tmergeable %s\n", pr.URL, pr.Owner, timeLabel, reviewDecisionEmoji, mergeableEmoji)
+}
+
+// Function to output data in single-line format
+func outputSingleLine(pr PullRequest, timeLabel, reviewDecisionEmoji, mergeableEmoji string) {
+	fmt.Printf("%s author: %s Age: %s reviewDecision: %s mergeable: %s\n", pr.URL, pr.Owner, timeLabel, reviewDecisionEmoji, mergeableEmoji)
+}
+
+// Function to output data in JSON format
+func outputJSON(pr PullRequest, timeLabel, reviewDecisionEmoji, mergeableEmoji string) {
+	data := struct {
+		URL            string `json:"url"`
+		Author         string `json:"author"`
+		Age            string `json:"age"`
+		ReviewDecision string `json:"review_decision"`
+		Mergeable      string `json:"mergeable"`
+	}{
+		URL:            pr.URL,
+		Author:         string(pr.Owner),
+		Age:            timeLabel,
+		ReviewDecision: reviewDecisionEmoji,
+		Mergeable:      mergeableEmoji,
+	}
+
+	jsonData, err := json.Marshal(data)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println(string(jsonData))
 }
