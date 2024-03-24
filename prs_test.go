@@ -36,6 +36,8 @@ func TestExtractPRDataFromEdges(t *testing.T) {
 				Author    struct {
 					Login githubv4.String
 				}
+				ReviewDecision githubv4.String
+				Mergeable      githubv4.String
 			}{
 				URL:       uri1,
 				CreatedAt: githubv4.DateTime{Time: time.Now().UTC().Truncate(time.Hour)},
@@ -55,6 +57,8 @@ func TestExtractPRDataFromEdges(t *testing.T) {
 				Author    struct {
 					Login githubv4.String
 				}
+				ReviewDecision githubv4.String
+				Mergeable      githubv4.String
 			}{
 				URL:       uri2,
 				CreatedAt: githubv4.DateTime{Time: time.Now().UTC().Truncate(time.Hour)},
@@ -122,6 +126,8 @@ func TestGetPrFromRepo(t *testing.T) {
 					Author    struct {
 						Login githubv4.String
 					}
+					ReviewDecision githubv4.String
+					Mergeable      githubv4.String
 				}{
 					URL:       uri,
 					CreatedAt: githubv4.DateTime{},
