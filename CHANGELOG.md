@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/Jmainguy/ghreport/compare/v0.3.0...v0.4.0) (2024-03-24)
+
+
+### Features
+
+* add output options as flags ([29687a0](https://github.com/Jmainguy/ghreport/commit/29687a0d8d2e53d936871d58328dab612a94b08c))
+
 ## [0.3.0](https://github.com/Jmainguy/ghreport/compare/v0.2.2...v0.3.0) (2024-03-24)
 
 
