@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.3.0](https://github.com/Jmainguy/ghreport/compare/v0.2.2...v0.3.0) (2024-03-24)
+
+
+### Features
+
+* support autodiscovery ([22a5a41](https://github.com/Jmainguy/ghreport/commit/22a5a41d34d436cff946d28b063a1471c23498d2))
+
+
+### Bug Fixes
+
+* change config.go from yaml2 to yaml3 ([dcde774](https://github.com/Jmainguy/ghreport/commit/dcde7748015c9fa1525181434092c662e664ca8f))
+* **deps:** update module github.com/stretchr/testify to v1.9.0 ([7606cac](https://github.com/Jmainguy/ghreport/commit/7606cac30e45cd4028bd1d2232bd3b73d6c4c11f))
+* **deps:** update module golang.org/x/oauth2 to v0.18.0 ([c7ad092](https://github.com/Jmainguy/ghreport/commit/c7ad092d3c9953324c77b4ced0b1f20eadb34a95))
+* **deps:** update module gopkg.in/yaml.v2 to v3 ([b818d2e](https://github.com/Jmainguy/ghreport/commit/b818d2e45364c7dabce4f1560ccd8112b064dfcc))
+* updated packages to latest ([1dbcac9](https://github.com/Jmainguy/ghreport/commit/1dbcac927859700f755e46da1ee303e42052d98f))
+
 ## [0.2.2](https://github.com/Jmainguy/ghreport/compare/v0.2.1...v0.2.2) (2024-02-29)
 
 
