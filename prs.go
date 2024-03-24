@@ -7,7 +7,7 @@ import (
 	"github.com/shurcooL/githubv4"
 )
 
-func getPrFromRepo(client Client, org, repo string) ([]PR, error) {
+func getPrFromRepo(client Client, org, repo string) ([]PullRequest, error) {
 	var repoQuery struct {
 		Repository struct {
 			PullRequests struct {
@@ -23,7 +23,7 @@ func getPrFromRepo(client Client, org, repo string) ([]PR, error) {
 		githubv4.PullRequestStateOpen,
 	}
 
-	var PRS []PR
+	var PRS []PullRequest
 
 	variables := map[string]interface{}{
 		"org":    githubv4.String(org),
@@ -57,12 +57,12 @@ func getPrFromRepo(client Client, org, repo string) ([]PR, error) {
 	return PRS, nil
 }
 
-func extractPRDataFromEdges(edges []PullRequestEdge) []PR {
-	var PRS []PR
+func extractPRDataFromEdges(edges []PullRequestEdge) []PullRequest {
+	var PRS []PullRequest
 
 	for _, edge := range edges {
 		if !bool(edge.Node.IsDraft) {
-			var pr PR
+			var pr PullRequest
 			pr.URL = edge.Node.URL.String()
 			pr.CreatedAt = edge.Node.CreatedAt
 			pr.Owner = edge.Node.Author.Login

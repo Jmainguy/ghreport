@@ -6,8 +6,8 @@ import (
 	"github.com/shurcooL/githubv4"
 )
 
-// PR : A pullRequest
-type PR struct {
+// PullRequest : A pullRequest
+type PullRequest struct {
 	CreatedAt      githubv4.DateTime `json:"createdAt"`
 	URL            string            `json:"url"`
 	Owner          githubv4.String   `json:"owner"`

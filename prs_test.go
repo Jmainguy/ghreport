@@ -73,7 +73,7 @@ func TestExtractPRDataFromEdges(t *testing.T) {
 	}
 
 	// Define expected output
-	expected := []PR{
+	expected := []PullRequest{
 		{
 			URL:       "https://github.com/my-org/my-repo/pull/1",
 			CreatedAt: githubv4.DateTime{Time: time.Now().UTC().Truncate(time.Hour)},
@@ -92,7 +92,7 @@ func TestGetPrFromRepo(t *testing.T) {
 	// Mock data for testing
 	org := "testOrg"
 	repo := "testRepo"
-	prs := []PR{
+	prs := []PullRequest{
 		{CreatedAt: githubv4.DateTime{}, URL: "https://github.com/testOrg/testRepo/pull/1", Owner: "john_doe"},
 	}
 
