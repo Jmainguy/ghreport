@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.4.1](https://github.com/Jmainguy/ghreport/compare/v0.4.0...v0.4.1) (2024-06-04)
+
+
+### Bug Fixes
+
+* **deps:** update github.com/shurcool/githubv4 digest to be2daab ([27beed7](https://github.com/Jmainguy/ghreport/commit/27beed73b3688a0515d0a3fb008c717575ee0e41))
+* **deps:** update module golang.org/x/oauth2 to v0.19.0 ([c901242](https://github.com/Jmainguy/ghreport/commit/c901242be6d3e9c8ab7bc00604994c77dae8af1e))
+* **deps:** update module golang.org/x/oauth2 to v0.20.0 ([3dfda62](https://github.com/Jmainguy/ghreport/commit/3dfda62dd8d9d367ab8b23c120d1e09042b5e137))
+* use latest dependencies ([617406b](https://github.com/Jmainguy/ghreport/commit/617406bf49d46db2a26f53c46cf0aff672dd9eba))
+
 ## [0.4.0](https://github.com/Jmainguy/ghreport/compare/v0.3.0...v0.4.0) (2024-03-24)
 
 
