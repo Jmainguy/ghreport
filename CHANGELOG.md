@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.2](https://github.com/Jmainguy/ghreport/compare/v0.4.1...v0.4.2) (2024-06-06)
+
+
+### Bug Fixes
+
+* **deps:** update module golang.org/x/oauth2 to v0.21.0 ([f7fc37e](https://github.com/Jmainguy/ghreport/commit/f7fc37e43b1ec485f2251bc6d3edc6c1476a3f02))
+
 ## [0.4.1](https://github.com/Jmainguy/ghreport/compare/v0.4.0...v0.4.1) (2024-06-04)
 
 
