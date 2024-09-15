@@ -4,5 +4,5 @@ on:
   push:
 
 jobs:
-  call-workflow:
+  golang-ci:
     uses: Jmainguy/workflows/.github/workflows/golang-ci.yml@testing
