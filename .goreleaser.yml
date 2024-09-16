@@ -1,3 +1,4 @@
+version: 2
 project_name: ghreport
 env:
   - GO111MODULE=on
@@ -41,22 +42,6 @@ nfpms:
   formats:
   - deb
   - rpm
-
-brews:
-  - repository:
-      owner: jmainguy
-      name: homebrew-tap
-    folder: Formula
-    homepage: https://github.com/Jmainguy/ghreport
-    description: "Check Github for Pull Requests, that are not Drafts, in repos the user cares about."
-    license: "GPL-2.0"
-    commit_author:
-      name: Jonathan Mainguy
-      email: jon@soh.re
-    test: |
-      system "#{bin}/ghreport"
-    install: |
-      bin.install "ghreport"
 
 checksum:
   name_template: 'checksums.txt'
