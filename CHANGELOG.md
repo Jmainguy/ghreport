@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.4](https://github.com/Jmainguy/ghreport/compare/v0.4.3...v0.4.4) (2024-12-17)
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/stretchr/testify to v1.10.0 ([3d9dcdd](https://github.com/Jmainguy/ghreport/commit/3d9dcdd224dabd0b4001ab3981e7608cd779dee5))
+
 ## [0.4.3](https://github.com/Jmainguy/ghreport/compare/v0.4.2...v0.4.3) (2024-11-16)
 
 
