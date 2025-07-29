@@ -23,6 +23,7 @@ type Config struct {
 	} `yaml:"autoDiscover"`
 	SubscribedRepos []string `yaml:"subscribedRepos"`
 	Token           string   `yaml:"token"`
+	DefaultOutput   string   `yaml:"defaultOutput"` // new field
 }
 
 func ensureConfigDirExists(configDir string) error {
@@ -49,6 +50,7 @@ func ensureConfigFileExists(configFilePath string) error {
 		defaultConfig := Config{
 			SubscribedRepos: []string{},
 			Token:           "",
+			DefaultOutput:   "", // default to empty
 		}
 		configBytes, err := yaml.Marshal(defaultConfig)
 		if err != nil {
@@ -123,6 +125,7 @@ func getConfig() (*Config, error) {
 		return &config, fmt.Errorf("env variable ghreportToken is not defined")
 	}
 	config.Token = envToken
+	config.DefaultOutput = os.Getenv("ghreportDefaultOutput") // allow override via env
 
 	return &config, nil
 

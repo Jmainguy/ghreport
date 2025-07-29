@@ -27,11 +27,48 @@ subscribedRepos:
   - Jmainguy/ghReview
   - Jmainguy/bak
 token: e0e9eac4e84446df6f3db180d07bfb222e91234
+defaultOutput: singleline   # <--- NEW: set default output format here (default, singleline, json)
 ```
 
-Running the progam
+## Output Format Configuration
+
+You can control the output format in two ways:
+
+1. **Command-line flag**:  
+   Use `-output=<format>` to override the output format for a single run.
+
+2. **Config file option**:  
+   Set `defaultOutput` in your `config.yaml` to specify the default output format for all runs.  
+   If the `-output` flag is not provided, the value from `defaultOutput` will be used.
+
+Supported formats are:
+- `default` (multi-line, human-readable)
+- `singleline` (one line per PR)
+- `json` (one JSON object per PR)
+
+**Precedence:**  
+If both are set, the command-line flag takes priority over the config file.
+
+Running the program
+
 ```
 ghreport [-output=<format>]
+```
+
+### Output Options
+
+The `-output` flag controls the format of the program's output. The following formats are supported:
+
+- **default** (or omitted): Multi-line, human-readable output with fields on separate lines.
+- **singleline**: All information for each pull request is printed on a single line.
+- **json**: Each pull request is output as a single JSON object per line.
+
+#### Example usage:
+
+```
+ghreport -output=default      # Multi-line output (default if omitted)
+ghreport -output=singleline   # Single-line output
+ghreport -output=json         # JSON output, one object per line
 ```
 
 ### Sample output with default format.

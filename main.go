@@ -25,6 +25,11 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Use config.DefaultOutput if flag not set
+	if flags.OutputFormat == "" && config.DefaultOutput != "" {
+		flags.OutputFormat = config.DefaultOutput
+	}
+
 	client := createGithubClient(config.Token)
 
 	// If autoDiscover is configured and there are organizations specified, get repos from those organizations
