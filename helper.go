@@ -57,10 +57,12 @@ func getReviewDecisionEmoji(decision string) string {
 }
 
 func getMergeableEmoji(mergeable string) string {
-	if mergeable == "MERGEABLE" {
-		return "✅" // Green checkmark emoji
-	} else if mergeable == "CONFLICTING" {
-		return "❌" // Red x emoji
+	switch mergeable {
+	case "MERGEABLE":
+		return "✅"
+	case "CONFLICTING":
+		return "❌"
+	default:
+		return ""
 	}
-	return ""
 }

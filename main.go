@@ -111,7 +111,9 @@ func main() {
 	}
 
 	if flags.OutputFormat == "" {
-		w.Flush()
+		if err := w.Flush(); err != nil {
+			fmt.Println("error flushing output:", err)
+		}
 	}
 }
 
@@ -125,7 +127,9 @@ func parseFlags() Flags {
 
 // Function to output data in default format
 func outputDefault(w *tabwriter.Writer, pr PullRequest, timeLabel, reviewDecisionEmoji, mergeableEmoji string) {
-	fmt.Fprintf(w, "%s\n\tauthor: %s\n\tAge: %s \n\treviewDecision: %s\n\tmergeable %s\n", pr.URL, pr.Owner, timeLabel, reviewDecisionEmoji, mergeableEmoji)
+	if _, err := fmt.Fprintf(w, "%s\n\tauthor: %s\n\tAge: %s \n\treviewDecision: %s\n\tmergeable %s\n", pr.URL, pr.Owner, timeLabel, reviewDecisionEmoji, mergeableEmoji); err != nil {
+		fmt.Println("error writing output:", err)
+	}
 }
 
 // Function to output data in single-line format

@@ -89,7 +89,11 @@ func readConfigFile(configFilePath string) (*Config, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer file.Close()
+	defer func() {
+		if cerr := file.Close(); cerr != nil {
+			fmt.Fprintf(os.Stderr, "error closing config file: %v\n", cerr)
+		}
+	}()
 
 	var config Config
 	decoder := yaml.NewDecoder(file)
