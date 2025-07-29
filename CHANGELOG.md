@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/Jmainguy/ghreport/compare/v0.4.4...v0.5.0) (2025-07-29)
+
+
+### Features
+
+* add defaultOutput option to config ([528bca0](https://github.com/Jmainguy/ghreport/commit/528bca0320d6538e0bcc1cad5b99cfdb1d8f79fc))
+
 ## [0.4.4](https://github.com/Jmainguy/ghreport/compare/v0.4.3...v0.4.4) (2024-12-17)
 
 
