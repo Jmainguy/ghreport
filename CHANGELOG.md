@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.0](https://github.com/Jmainguy/ghreport/compare/v0.5.0...v1.0.0) (2025-07-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* allow env vars and config to both work
+
+### Features
+
+* allow env vars and config to both work ([d6f5c48](https://github.com/Jmainguy/ghreport/commit/d6f5c48eb60869944416a09e84ebd403da81802d))
+
 ## [0.5.0](https://github.com/Jmainguy/ghreport/compare/v0.4.4...v0.5.0) (2025-07-29)
 
 
