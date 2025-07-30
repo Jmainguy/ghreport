@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -32,52 +33,67 @@ func main() {
 
 	client := createGithubClient(config.Token)
 
-	// If autoDiscover is configured and there are organizations specified, get repos from those organizations
-	if len(config.AutoDiscover.Organizations) > 0 {
+	// Determine if we should use config or fallback to user's owned repos
+	hasSubscribed := len(config.SubscribedRepos) > 0
+	hasAutoDiscover := len(config.AutoDiscover.Organizations) > 0 || len(config.AutoDiscover.Users) > 0
+
+	var repoList []string
+
+	if hasSubscribed || hasAutoDiscover {
+		// Use only subscribedRepos and autoDiscover
+		repoMap := make(map[string]bool)
+		// Add subscribedRepos
+		for _, repoString := range config.SubscribedRepos {
+			repoMap[strings.ToLower(repoString)] = true
+		}
+		// Add autoDiscover organizations
 		for _, org := range config.AutoDiscover.Organizations {
 			repos, err := getReposFromOrganization(client, org.Name, org.Topic)
 			if err != nil {
 				fmt.Println(err)
 				os.Exit(1)
 			}
-
-			// Append discovered repos to subscribedRepos list
-			var repoNames []string
 			for _, repo := range repos {
-				repoNames = append(repoNames, string(repo.NameWithOwner))
+				repoMap[strings.ToLower(string(repo.NameWithOwner))] = true
 			}
-			config.SubscribedRepos = append(config.SubscribedRepos, repoNames...)
 		}
-	}
-
-	if len(config.AutoDiscover.Users) > 0 {
+		// Add autoDiscover users
 		for _, user := range config.AutoDiscover.Users {
 			repos, err := getReposFromUser(client, user.Name, user.Topic)
 			if err != nil {
 				fmt.Println(err)
 				os.Exit(1)
 			}
-
-			// Append discovered repos to subscribedRepos list
-			var repoNames []string
 			for _, repo := range repos {
-				repoNames = append(repoNames, string(repo.NameWithOwner))
+				repoMap[strings.ToLower(string(repo.NameWithOwner))] = true
 			}
-			config.SubscribedRepos = append(config.SubscribedRepos, repoNames...)
 		}
-	}
-
-	// Ensure list of repos is unique
-	repoMap := make(map[string]bool)
-	for _, repoString := range config.SubscribedRepos {
-		repoMap[strings.ToLower(repoString)] = true
+		// Build final repo list
+		for repo := range repoMap {
+			repoList = append(repoList, repo)
+		}
+	} else {
+		// Fallback: get all repos owned by the authenticated user
+		username, err := getAuthenticatedUsername(client)
+		if err != nil {
+			fmt.Println("Could not determine authenticated username:", err)
+			os.Exit(1)
+		}
+		repos, err := getReposFromUser(client, username, "")
+		if err != nil {
+			fmt.Println("Could not get repos for authenticated user:", err)
+			os.Exit(1)
+		}
+		for _, repo := range repos {
+			repoList = append(repoList, strings.ToLower(string(repo.NameWithOwner)))
+		}
 	}
 
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
 
 	// List of repos to watch
 
-	for ownerRepo := range repoMap {
+	for _, ownerRepo := range repoList {
 		owner, repo, err := getOwnerAndRepo(ownerRepo)
 		if err != nil {
 			fmt.Println(err)
@@ -160,4 +176,18 @@ func outputJSON(pr PullRequest, timeLabel, reviewDecisionEmoji, mergeableEmoji s
 	}
 
 	fmt.Println(string(jsonData))
+}
+
+// Helper to get the authenticated user's login name
+func getAuthenticatedUsername(client Client) (string, error) {
+	var query struct {
+		Viewer struct {
+			Login string
+		}
+	}
+	err := client.Query(context.Background(), &query, nil)
+	if err != nil {
+		return "", err
+	}
+	return query.Viewer.Login, nil
 }

@@ -112,6 +112,18 @@ func getConfig() (*Config, error) {
 			// Config file exists, read values from there
 			config, err := readConfigFile(configFilePath)
 			if err == nil {
+				// Prefer token from config file if present
+				if config.Token == "" {
+					// Fallback to env vars if not set in config
+					envToken := os.Getenv("ghreportToken")
+					if envToken == "" {
+						envToken = os.Getenv("GITHUB_TOKEN")
+					}
+					if envToken == "" {
+						return nil, fmt.Errorf("token not set in config.yaml and neither ghreportToken nor GITHUB_TOKEN env variable is defined")
+					}
+					config.Token = envToken
+				}
 				return config, nil
 			}
 		}
@@ -124,9 +136,13 @@ func getConfig() (*Config, error) {
 		return &config, fmt.Errorf("env variable subscribedRepos is not defined")
 	}
 	config.SubscribedRepos = strings.Split(envSubscribedRepos, " ")
+	// Token fallback logic
 	envToken := os.Getenv("ghreportToken")
 	if envToken == "" {
-		return &config, fmt.Errorf("env variable ghreportToken is not defined")
+		envToken = os.Getenv("GITHUB_TOKEN")
+	}
+	if envToken == "" {
+		return &config, fmt.Errorf("neither ghreportToken nor GITHUB_TOKEN env variable is defined")
 	}
 	config.Token = envToken
 	config.DefaultOutput = os.Getenv("ghreportDefaultOutput") // allow override via env
