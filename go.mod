@@ -1,6 +1,6 @@
 module github.com/jmainguy/ghreport
 
-go 1.24.2
+go 1.25
 
 require (
 	github.com/shurcooL/githubv4 v0.0.0-20240727222349-48295856cce7
